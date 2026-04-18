@@ -1,26 +1,42 @@
 {
-    "$schema": "https://go.kicad.org/pcm/schemas/v1",
-    "identifier": "com.github.z2amiller.builddoc",
-    "type": "plugin",
-    "name": "Build Document Generator",
-    "description": "Generates a PedalPCB-style build document PDF from the current board: cover page with board outline, parts list (BOM), and embedded schematic export.",
-    "description_full": "Produces a multi-page PDF build document styled after PedalPCB project docs. Includes a cover page with the board outline (Edge.Cuts + silkscreen), a formatted parts list pulled from footprint attributes, and optionally the schematic exported via kicad-cli. Python dependencies (reportlab, pypdf, svglib) are bundled in the plugin ZIP.",
-    "author": {
-        "name": "Andy Miller",
-        "contact": {
-            "web": "https://z2amiller.com"
-        }
-    },
-    "maintainer": {
-        "name": "Andy Miller",
-        "contact": {
-            "web": "https://z2amiller.com"
-        }
-    },
-    "license": "MIT",
-    "resources": {
-        "homepage": "https://github.com/z2amiller/kicad-build-doc-plugin"
-    },
-    "tags": ["documentation", "bom", "pdf", "pedal", "fabrication"],
-    "versions": []
+  "$schema": "https://go.kicad.org/pcm/schemas/v1",
+  "identifier": "com.github.z2amiller.builddoc",
+  "type": "plugin",
+  "name": "Build Document Generator",
+  "description": "Generates a PedalPCB-style build document PDF from the current board: cover page with board outline, parts list (BOM), and embedded schematic export.",
+  "description_full": "Produces a multi-page PDF build document styled after PedalPCB project docs. Includes a cover page with the board outline (Edge.Cuts + silkscreen), a formatted parts list pulled from footprint attributes, and optionally the schematic exported via kicad-cli. Python dependencies (reportlab, pypdf, svglib) are bundled in the plugin ZIP.",
+  "author": {
+    "name": "Andy Miller",
+    "contact": {
+      "web": "https://z2amiller.com"
+    }
+  },
+  "maintainer": {
+    "name": "Andy Miller",
+    "contact": {
+      "web": "https://z2amiller.com"
+    }
+  },
+  "license": "MIT",
+  "resources": {
+    "homepage": "https://github.com/z2amiller/kicad-build-doc-plugin"
+  },
+  "tags": [
+    "documentation",
+    "bom",
+    "pdf",
+    "pedal",
+    "fabrication"
+  ],
+  "versions": [
+    {
+      "version": "1.0.0",
+      "status": "stable",
+      "kicad_version": "9.0",
+      "download_url": "https://github.com/z2amiller/kicad-build-doc-plugin/releases/download/v1.0.0/kicad-build-doc-plugin-v1.0.0.zip",
+      "download_sha256": "43214bca8dbaf24b55b7ce4d0fc2a89a4436cd832676002b17764b2da87d78fe",
+      "download_size": 14386677,
+      "install_size": 36199328
+    }
+  ]
 }
