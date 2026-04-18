@@ -3,7 +3,7 @@
     "name": "z2amiller KiCad plugins",
     "packages": {
         "url": "https://raw.githubusercontent.com/z2amiller/kicad-pcm/main/packages.json",
-        "sha256": "7fed23ce4b1c8494d3534ba06908ed4c62bb92389f1fef6c4d630e018508202a",
-        "update_timestamp": 1776494017
+        "sha256": "973d6d8ad5dd94a8d039d937ffe3ee0d808da8956c758430e44edee214ee3e84",
+        "update_timestamp": 1776494386
     }
 }
