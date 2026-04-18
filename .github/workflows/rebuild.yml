@@ -78,10 +78,13 @@ jobs:
           packages = []
           for f in sorted(glob.glob("packages/*.json")):
               with open(f) as fh:
-                  packages.append(json.load(fh))
+                  pkg = json.load(fh)
+                  pkg.pop("$schema", None)  # not valid inside packages array
+                  packages.append(pkg)
 
           repo = {
               "$schema": "https://go.kicad.org/pcm/schemas/v1",
+              "name": "z2amiller KiCad plugins",
               "packages": packages
           }
           with open("repository.json", "w") as fh:
