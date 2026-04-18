@@ -70,32 +70,46 @@ jobs:
             '.versions = [$nv] + [.versions[] | select(.version != $v)]' \
             "$PKG_FILE" > "$PKG_FILE.tmp" && mv "$PKG_FILE.tmp" "$PKG_FILE"
 
-      - name: Rebuild repository.json
+      - name: Rebuild repository.json and packages.json
         run: |
           python3 - <<'EOF'
-          import json, glob, os
+          import json, glob, hashlib, time
 
           packages = []
           for f in sorted(glob.glob("packages/*.json")):
               with open(f) as fh:
                   pkg = json.load(fh)
-                  pkg.pop("$schema", None)  # not valid inside packages array
+                  pkg.pop("$schema", None)
                   packages.append(pkg)
 
+          # packages.json holds the actual package list
+          packages_doc = {"packages": packages}
+          packages_json = json.dumps(packages_doc, indent=4)
+          with open("packages.json", "w") as fh:
+              fh.write(packages_json)
+
+          sha256 = hashlib.sha256(packages_json.encode()).hexdigest()
+          timestamp = int(time.time())
+
+          # repository.json is an index pointing to packages.json
           repo = {
               "$schema": "https://go.kicad.org/pcm/schemas/v1",
               "name": "z2amiller KiCad plugins",
-              "packages": packages
+              "packages": {
+                  "url": "https://raw.githubusercontent.com/z2amiller/kicad-pcm/main/packages.json",
+                  "sha256": sha256,
+                  "update_timestamp": timestamp
+              }
           }
           with open("repository.json", "w") as fh:
               json.dump(repo, fh, indent=4)
-          print(f"Built repository.json with {len(packages)} package(s)")
+          print(f"Built {len(packages)} package(s), sha256={sha256}")
           EOF
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add packages/ repository.json
+          git add packages/ repository.json packages.json
           git diff --cached --quiet || git commit -m "Add ${{ github.event.inputs.package_id }} v${{ github.event.inputs.version }}"
           git push
