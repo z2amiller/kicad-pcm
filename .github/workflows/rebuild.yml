@@ -1,0 +1,98 @@
+name: Rebuild repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_id:
+        description: Package identifier (e.g. com.github.z2amiller.builddoc)
+        required: true
+      version:
+        description: Version string (e.g. 1.0.0)
+        required: true
+      download_url:
+        description: Direct download URL for the ZIP
+        required: true
+      download_sha256:
+        description: SHA256 of the ZIP
+        required: true
+      download_size:
+        description: ZIP file size in bytes
+        required: true
+      install_size:
+        description: Uncompressed install size in bytes
+        required: true
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add version to package metadata
+        env:
+          PKG_ID: ${{ github.event.inputs.package_id }}
+          VERSION: ${{ github.event.inputs.version }}
+          DOWNLOAD_URL: ${{ github.event.inputs.download_url }}
+          DOWNLOAD_SHA256: ${{ github.event.inputs.download_sha256 }}
+          DOWNLOAD_SIZE: ${{ github.event.inputs.download_size }}
+          INSTALL_SIZE: ${{ github.event.inputs.install_size }}
+        run: |
+          PKG_FILE="packages/${PKG_ID//./_}.json"
+          # Replace dots with underscores for filename, but also try dot-separated
+          if [ ! -f "$PKG_FILE" ]; then
+            PKG_FILE="packages/${PKG_ID}.json"
+          fi
+          if [ ! -f "$PKG_FILE" ]; then
+            echo "Package file not found for $PKG_ID"
+            exit 1
+          fi
+
+          NEW_VERSION=$(jq -n \
+            --arg v "$VERSION" \
+            --arg url "$DOWNLOAD_URL" \
+            --arg sha "$DOWNLOAD_SHA256" \
+            --argjson dsz "$DOWNLOAD_SIZE" \
+            --argjson isz "$INSTALL_SIZE" \
+            '{
+              version: $v,
+              status: "stable",
+              kicad_version: "9.0",
+              download_url: $url,
+              download_sha256: $sha,
+              download_size: $dsz,
+              install_size: $isz
+            }')
+
+          # Remove existing entry for this version (idempotent), then prepend
+          jq --argjson nv "$NEW_VERSION" --arg v "$VERSION" \
+            '.versions = [$nv] + [.versions[] | select(.version != $v)]' \
+            "$PKG_FILE" > "$PKG_FILE.tmp" && mv "$PKG_FILE.tmp" "$PKG_FILE"
+
+      - name: Rebuild repository.json
+        run: |
+          python3 - <<'EOF'
+          import json, glob, os
+
+          packages = []
+          for f in sorted(glob.glob("packages/*.json")):
+              with open(f) as fh:
+                  packages.append(json.load(fh))
+
+          repo = {
+              "$schema": "https://go.kicad.org/pcm/schemas/v1",
+              "packages": packages
+          }
+          with open("repository.json", "w") as fh:
+              json.dump(repo, fh, indent=4)
+          print(f"Built repository.json with {len(packages)} package(s)")
+          EOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add packages/ repository.json
+          git diff --cached --quiet || git commit -m "Add ${{ github.event.inputs.package_id }} v${{ github.event.inputs.version }}"
+          git push
