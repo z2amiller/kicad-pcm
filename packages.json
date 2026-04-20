@@ -31,6 +31,15 @@
             ],
             "versions": [
                 {
+                    "version": "1.0.25",
+                    "status": "stable",
+                    "kicad_version": "9.0",
+                    "download_url": "https://github.com/z2amiller/kicad-build-doc-plugin/releases/download/v1.0.25/kicad-build-doc-plugin-v1.0.25.zip",
+                    "download_sha256": "967d12bb660c4f9c9df82180862ccba30c85a771ba7927995f56922dae1b48a3",
+                    "download_size": 63239,
+                    "install_size": 197797
+                },
+                {
                     "version": "1.0.24",
                     "status": "stable",
                     "kicad_version": "9.0",
