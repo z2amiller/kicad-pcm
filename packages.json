@@ -332,6 +332,15 @@
             ],
             "versions": [
                 {
+                    "version": "0.3.0",
+                    "status": "stable",
+                    "kicad_version": "9.0",
+                    "download_url": "https://github.com/z2amiller/kicad-pedal-tools/releases/download/manifest%2Fv0.3.0/manifest-creator-v0.3.0.zip",
+                    "download_sha256": "a2a08b077faeabc843b69cacc5593d2e97b140365c5a36fd3a962d66c29de38e",
+                    "download_size": 63798,
+                    "install_size": 166729
+                },
+                {
                     "version": "0.2.3",
                     "status": "stable",
                     "kicad_version": "9.0",
