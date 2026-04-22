@@ -29,6 +29,15 @@
   ],
   "versions": [
     {
+      "version": "0.2.1",
+      "status": "stable",
+      "kicad_version": "9.0",
+      "download_url": "https://github.com/z2amiller/manifest-creator/releases/download/v0.2.1/manifest-creator-v0.2.1.zip",
+      "download_sha256": "2c7010d01a093887e170251cd4251ed852f0b8cc13f11d61eaf8207f6ca82e06",
+      "download_size": 48978,
+      "install_size": 125303
+    },
+    {
       "version": "0.0.0",
       "status": "stable",
       "kicad_version": "9.0",
