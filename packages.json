@@ -339,15 +339,6 @@
                     "download_sha256": "2c7010d01a093887e170251cd4251ed852f0b8cc13f11d61eaf8207f6ca82e06",
                     "download_size": 48978,
                     "install_size": 125303
-                },
-                {
-                    "version": "0.0.0",
-                    "status": "stable",
-                    "kicad_version": "9.0",
-                    "download_url": "placeholder",
-                    "download_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-                    "download_size": 0,
-                    "install_size": 0
                 }
             ]
         }
